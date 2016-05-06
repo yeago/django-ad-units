@@ -14,12 +14,15 @@ def ad(context, name):
         return ''
 
     try:
-        unit = Unit.objects.get(name=name)
-    except Unit.DoesNotExist:
-        if settings.DEBUG:
-            raise
-        return ''
+        tmpl = template.loader.get_template('adunits/%s.html' % name)
+    except template.TemplateDoesNotExist:
+        try:
+            unit = Unit.objects.get(name=name)
+        except Unit.DoesNotExist:
+            if settings.DEBUG:
+                raise
+            return ''
+        tmpl = template.Template(unit.source)
 
-    tmpl = template.Template(unit.source)
     context.update({'context': context})
     return mark_safe(tmpl.render(Context(context)))
