@@ -17,15 +17,16 @@ def ad(context, name):
         tmpl = template.loader.get_template('adunits/%s.html' % name)
     except template.TemplateDoesNotExist:
         site = Site.objects.get_current()
-        ad_settings = Settings.objects.get(site=site)
         kwargs = {'name': name}
-        if ad_settings.active_vendor_id:
-            kwargs.update({'vendor': ad_settings.active_vendor_id})
+        try:
+            ad_settings = Settings.objects.get(site=site)
+            if ad_settings.active_vendor_id:
+                kwargs.update({'vendor': ad_settings.active_vendor_id})
+        except Settings.DoesNotExist:
+            pass
         try:
             unit = Unit.objects.get(**kwargs)
         except Unit.DoesNotExist:
-            if settings.DEBUG:
-                raise
             return ''
         tmpl = template.Template(unit.source)
 

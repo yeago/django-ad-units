@@ -7,6 +7,7 @@ from adunits import signals as adunit_signals
 
 class Vendor(models.Model):
     name = models.CharField(unique=True, max_length=30)
+
     def __unicode__(self):
         return self.name
 
