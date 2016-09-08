@@ -2,11 +2,17 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.db.models import signals
-from django.contrib import sites
 from adunits import signals as adunit_signals
 
 
+class Vendor(models.Model):
+    name = models.CharField(unique=True, max_length=30)
+    def __unicode__(self):
+        return self.name
+
+
 class Unit(models.Model):
+    vendor = models.ForeignKey('Vendor', null=True, blank=True)
     name = models.CharField(max_length=255, unique=True)
     source = models.TextField(
         help_text="html/script source. generally you're 'ad tags'")
@@ -15,6 +21,7 @@ class Unit(models.Model):
 
 class Settings(models.Model):
     site = models.OneToOneField('sites.Site')
+    active_vendor = models.OneToOneField('Vendor', null=True, blank=True)
     header_source = models.TextField(
         null=True, blank=True,
         help_text="Commonly, scripts are needed between <head></head>")
