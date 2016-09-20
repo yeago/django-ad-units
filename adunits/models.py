@@ -14,10 +14,13 @@ class Vendor(models.Model):
 
 class Unit(models.Model):
     vendor = models.ForeignKey('Vendor', null=True, blank=True)
-    name = models.CharField(max_length=255, unique=True)
+    name = models.CharField(max_length=255)
     source = models.TextField(
         help_text="html/script source. generally you're 'ad tags'")
     date_added = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('vendor', 'name',)
 
 
 class Settings(models.Model):
