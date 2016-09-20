@@ -28,6 +28,8 @@ def ad(context, name):
             unit = Unit.objects.get(**kwargs)
         except Unit.DoesNotExist:
             return ''
+        except Unit.MultipleObjectsReturned:
+            return Unit.objects.filter(**kwargs)[0]  # Maybe transitional where you're setting up vendors
         tmpl = template.Template(unit.source)
 
     context.update({'context': context})
