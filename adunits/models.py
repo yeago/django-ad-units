@@ -24,7 +24,7 @@ class Unit(models.Model):
 
 
 class Settings(models.Model):
-    site = models.OneToOneField('sites.Site')
+    site = models.OneToOneField('sites.Site', null=True, blank=True)
     active_vendor = models.OneToOneField('Vendor', null=True, blank=True)
     header_source = models.TextField(
         null=True, blank=True,
@@ -32,6 +32,14 @@ class Settings(models.Model):
     endbody_source = models.TextField(
         null=True, blank=True,
         help_text="Commonly scripts are needed before </body>")
+
+    def __unicode__(self):
+        tokens = []
+        if self.site_id:
+            tokens.append(self.site)
+        if self.active_vendor:
+            tokens.append(self.active_vendor)
+        return " - ".join(tokens)
 
 
 signals.post_migrate.connect(
