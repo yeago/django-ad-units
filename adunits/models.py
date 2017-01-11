@@ -39,7 +39,7 @@ class Settings(models.Model):
             tokens.append(self.site)
         if self.active_vendor:
             tokens.append(self.active_vendor)
-        return " - ".join(tokens)
+        return " - ".join(map(str, tokens))
 
 
 signals.post_migrate.connect(
