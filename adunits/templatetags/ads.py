@@ -34,3 +34,20 @@ def ad(context, name):
 
     context.update({'context': context})
     return mark_safe(tmpl.render(Context(context)))
+
+
+@register.simple_tag(takes_context=True)
+def ad2(context, vendor, name):  # another take
+    if getattr(settings, 'AD_SERVING_DISABLED', False):
+        return ''
+
+    kwargs = {'name': name, 'vendor': vendor}
+    try:
+        unit = Unit.objects.get(**kwargs)
+    except Unit.DoesNotExist:
+        return ''
+    except Unit.MultipleObjectsReturned:
+        return Unit.objects.filter(**kwargs)[0]  # Maybe transitional where you're setting up vendors
+    tmpl = template.Template(unit.source)
+    context.update({'context': context})
+    return mark_safe(tmpl.render(Context(context)))

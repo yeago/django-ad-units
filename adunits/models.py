@@ -7,6 +7,12 @@ from adunits import signals as adunit_signals
 
 class Vendor(models.Model):
     name = models.CharField(unique=True, max_length=30)
+    header_source = models.TextField(
+        null=True, blank=True,
+        help_text="Commonly, scripts are needed between <head></head>")
+    endbody_source = models.TextField(
+        null=True, blank=True,
+        help_text="Commonly scripts are needed before </body>")
 
     def __unicode__(self):
         return self.name
