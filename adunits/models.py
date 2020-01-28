@@ -19,8 +19,8 @@ class Vendor(models.Model):
 
 
 class Unit(models.Model):
-    vendor = models.ForeignKey('Vendor', null=True, blank=True)
-    name = models.CharField(max_length=255)
+    vendor = models.ForeignKey('Vendor', null=True, blank=True, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255,)
     source = models.TextField(
         help_text="html/script source. generally you're 'ad tags'")
     date_added = models.DateTimeField(auto_now_add=True)
@@ -30,7 +30,7 @@ class Unit(models.Model):
 
 
 class Settings(models.Model):
-    site = models.OneToOneField('sites.Site', null=True, blank=True)
+    site = models.OneToOneField('sites.Site', null=True, blank=True, on_delete=models.PROTECT)
     active_vendor = models.OneToOneField('Vendor', null=True, blank=True)
     header_source = models.TextField(
         null=True, blank=True,
