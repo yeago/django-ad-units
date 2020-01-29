@@ -31,7 +31,7 @@ class Unit(models.Model):
 
 class Settings(models.Model):
     site = models.OneToOneField('sites.Site', null=True, blank=True, on_delete=models.PROTECT)
-    active_vendor = models.OneToOneField('Vendor', null=True, blank=True)
+    active_vendor = models.OneToOneField('Vendor', null=True, blank=True, on_delete=models.SET_NULL)
     header_source = models.TextField(
         null=True, blank=True,
         help_text="Commonly, scripts are needed between <head></head>")
